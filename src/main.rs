@@ -15,14 +15,18 @@ fn main() {
     rt.block_on(async {
         let db: Data = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
 
-        let get = warp::get()
+        let site = warp::get()
             .and(warp::fs::dir("./client"));
-        let post = warp::post()
+        let post_item = warp::path!("api")
+            .and(warp::post())
             .and(data_as_filter(db))
             .and(warp::body::json())
             .and_then(add_item_to_data);
 
-        warp::serve(post.or(get)).run(([127, 0, 0, 1], 3030)).await;
+        let app = site
+            .or(post_item);
+
+        warp::serve(app).run(([127, 0, 0, 1], 3030)).await;
     });
 }
 

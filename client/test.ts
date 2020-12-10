@@ -1,7 +1,7 @@
 var inputBox = document.getElementById("add-item-textbox") as HTMLInputElement;
 
 const newItem = () => {
-    fetch('/', {
+    fetch('/api/', {
         method: 'POST', 
         mode: 'cors',
         headers: {
