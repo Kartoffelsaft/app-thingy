@@ -15,8 +15,6 @@ fn main() {
     rt.block_on(async {
         let db: Data = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
 
-        println!("{}", serde_json::to_string(&NewItem {text: String::from("test")}).unwrap());
-        
         let get = warp::get()
             .and(warp::fs::dir("./client"));
         let post = warp::post()
@@ -38,8 +36,6 @@ async fn add_item_to_data(
     rdata: Data,
     item: NewItem
 ) -> Result<impl warp::Reply, Infallible> {
-    println!("new item: {:#?}", item);
-
     let mut data = rdata.lock().unwrap();
 
     data.push(item.text);
