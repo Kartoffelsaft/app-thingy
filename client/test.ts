@@ -9,6 +9,7 @@ const newItem = () => {
         },
         body: JSON.stringify({"text":inputBox.value})
     })
+        .then(() => fetch('/api/', {method: 'GET'}))
         .then(currentItems => {
             return currentItems.json();
         })
