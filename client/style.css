@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .main {
     display: grid;
 }
@@ -12,7 +16,7 @@
 .add-item-textbox {
     width: 100%;
     padding: 8px;
-    height: 24pt;
+    height: calc(24pt + 16px);
     font-size: 24pt;
     resize: none;
     border: calc(1pt + 1px) solid #b0b0b0;
