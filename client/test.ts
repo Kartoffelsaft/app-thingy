@@ -1,6 +1,21 @@
 var inputBox = document.getElementById("add-item-textbox") as HTMLInputElement;
 var itemList = document.getElementById("items") as HTMLDivElement;
 
+class Item {
+    text: string;
+    time_created: number;
+}
+
+var data: Array<Item>;
+
+const createEntryFromItem = (item: Item) => {
+    let entry: HTMLElement = document.createElement('p');
+    entry.className = 'item-entry';
+    entry.innerText = item.text;
+
+    return entry;
+}
+
 const newItem = () => {
     fetch('/api/', {
         method: 'POST', 
@@ -10,16 +25,12 @@ const newItem = () => {
         body: JSON.stringify({"text":inputBox.value})
     })
         .then(() => fetch('/api/', {method: 'GET'}))
+        .then(currentItems => currentItems.json())
         .then(currentItems => {
-            return currentItems.json();
-        })
-        .then(currentItems => {
+            data = currentItems.value;
             itemList.innerHTML = "";
-            currentItems.value.forEach((item: any) => {
-                var entry = document.createElement('p');
-                entry.className = 'item-entry';
-                entry.innerText = item.text;
-                itemList.appendChild(entry);
+            data.forEach(item => {
+                itemList.appendChild(createEntryFromItem(item));
                 
                 let date_created = new Date(0);
                 date_created.setUTCSeconds(item.time_created);
