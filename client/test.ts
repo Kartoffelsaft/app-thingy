@@ -15,11 +15,15 @@ const newItem = () => {
         })
         .then(currentItems => {
             itemList.innerHTML = "";
-            currentItems.value.forEach((item: string) => {
+            currentItems.value.forEach((item: any) => {
                 var entry = document.createElement('p');
                 entry.className = 'item-entry';
-                entry.innerText = item;
+                entry.innerText = item.text;
                 itemList.appendChild(entry);
+                
+                let date_created = new Date(0);
+                date_created.setUTCSeconds(item.time_created);
+                console.log(date_created);
             });
         })
         .then(() => inputBox.value = "");

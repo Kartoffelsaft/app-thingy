@@ -2,7 +2,13 @@ use std::convert::Infallible;
 
 use warp::Filter;
 
-type Data = std::sync::Arc<std::sync::Mutex<Vec<String>>>;
+type Data = std::sync::Arc<std::sync::Mutex<Vec<Datum>>>;
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+struct Datum {
+    text: String,
+    time_created: u64,
+}
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 struct NewItem {
@@ -52,7 +58,7 @@ async fn add_item_to_data(
 ) -> Result<impl warp::Reply, Infallible> {
     let mut data = rdata.lock().unwrap();
 
-    data.push(item.text);
+    data.push(Datum::with_text(item.text));
 
     Ok(warp::http::StatusCode::CREATED)
 }
@@ -65,4 +71,16 @@ async fn get_data(
     Ok(warp::reply::json(&serde_json::json!({
         "value": data
     })))
+}
+
+impl Datum {
+    fn with_text(ntext: String) -> Datum {
+        Datum {
+            text: ntext,
+            time_created: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("time travelers breaking the code again")
+                .as_secs(),
+        }
+    }
 }
