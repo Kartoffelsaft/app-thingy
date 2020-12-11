@@ -15,6 +15,12 @@
     height: 24pt;
     font-size: 24pt;
     resize: none;
-    border: 2px solid #b0b0b0;
+    border: calc(1pt + 1px) solid #b0b0b0;
+    border-radius: 8px;
+}
+
+.item-entry {
+    text-align: center;
+    border: 2px dotted #cacaca;
     border-radius: 8px;
 }
