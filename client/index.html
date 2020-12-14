@@ -4,15 +4,21 @@
     <meta content="utf-8" http-equiv="encoding">
     <link type="text/css" href="./style.css" rel="stylesheet"></link>
 </head>
-<body>
-    <div class="main">
+<body class="main">
+    <div class="compose-overlay" id="compose-overlay">
+        <form class="compose-form" action="#" onsubmit="newItem()">
+            <div class="labeled-entry">
+                <label for="memo">Memo: </label>
+                <input type="text" class="memo-textbox" id="memo"></input>
+            </div>
+        </form>
+    </div>
+    <div class="sidebar">
+        <button class="compose-button" onclick="openComposeMenu()">+ Compose</button>
+    </div>
+    <div class="content">
         <div class="center-list">
-            <form action="#" onsubmit="newItem()">
-                <input type="text" class="add-item-textbox" id="add-item-textbox"></input>
-            </form>
             <div class="items" id="items">
-                <!-- this is here to force firefox to realize there is a css class named "item-entry" -->
-                <p class="item-entry">put something here!</p>
             </div>
         </div>
     </div>

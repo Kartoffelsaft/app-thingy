@@ -1,5 +1,6 @@
-var inputBox = document.getElementById("add-item-textbox") as HTMLInputElement;
+var inputBox = document.getElementById("memo") as HTMLInputElement;
 var itemList = document.getElementById("items") as HTMLDivElement;
+var composeOverlay = document.getElementById("compose-overlay") as HTMLDivElement;
 
 class Item {
     text: string;
@@ -14,6 +15,10 @@ const createEntryFromItem = (item: Item) => {
     entry.innerText = item.text;
 
     return entry;
+}
+
+const openComposeMenu = () => {
+    composeOverlay.style.display = "grid";
 }
 
 const newItem = () => {
@@ -37,5 +42,8 @@ const newItem = () => {
                 console.log(date_created);
             });
         })
-        .then(() => inputBox.value = "");
+        .then(() => {
+            inputBox.value = ""
+            composeOverlay.style.display = "none";
+        });
 }
