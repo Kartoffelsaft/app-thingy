@@ -6,15 +6,19 @@
 </head>
 <body class="main">
     <div class="compose-overlay" id="compose-overlay">
-        <form class="compose-form" action="#" onsubmit="newItem()">
+        <form class="compose-form" action="#" id="compose-form">
             <div class="labeled-entry">
                 <label for="memo">Memo: </label>
-                <input type="text" class="memo-textbox" id="memo"></input>
+                <input type="text" class="input-textbox" id="memo"></input>
+            </div>
+            <div class="labeled-entry">
+                <label for="event">Event date: </label>
+                <input type="date" class="input-textbox" id="event"></input>
             </div>
         </form>
     </div>
     <div class="sidebar">
-        <button class="compose-button" onclick="openComposeMenu()">+ Compose</button>
+        <button class="compose-button" id="compose-button">+ Compose</button>
     </div>
     <div class="content">
         <div class="center-list">
@@ -22,5 +26,7 @@
             </div>
         </div>
     </div>
-    <script src="./test.js"></script>
+    <!-- placate tsc -->
+    <script>var exports = {}</script>
+    <script src="./app.js"></script>
 </body>

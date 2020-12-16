@@ -1,3 +1,4 @@
 target
 Cargo.lock
-client/*.js
+client/app.js
+client/build/

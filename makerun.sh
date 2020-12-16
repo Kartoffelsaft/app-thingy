@@ -1,4 +1,5 @@
 #!/bin/sh
 
-tsc ./client/*.ts &&
+tsc -p ./client/ &&
+browserify ./client/build/* > ./client/app.js
 cargo run

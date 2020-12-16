@@ -1,18 +1,21 @@
 use std::convert::Infallible;
 
 use warp::Filter;
+use chrono::prelude::*;
 
 type Data = std::sync::Arc<std::sync::Mutex<Vec<Datum>>>;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 struct Datum {
-    text: String,
-    time_created: u64,
+    memo: String,
+    created_time: DateTime<Utc>,
+    event_time: DateTime<Utc>,
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 struct NewItem {
-    text: String,
+    memo: String,
+    event_time: String,
 }
 
 // I would use #[tokio::main] but the macro kept pissing on itself
@@ -21,18 +24,25 @@ fn main() {
     rt.block_on(async {
         let db: Data = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
 
-        // GET  /                      -> index.html
+        // GET  
+        // /
+        // -> index.html
         let site = warp::get()
             .and(warp::fs::dir("./client"));
 
-        // POST /api/ {text: string}   -> 201 Created
+        // POST 
+        // /api/ 
+        // {memo: string, event_time: string}   
+        // -> 201 Created
         let post_item = warp::path!("api")
             .and(warp::post())
             .and(data_as_filter(db.clone()))
             .and(warp::body::json())
             .and_then(add_item_to_data);
 
-        // GET /api/                   -> {value: [data]}
+        // GET 
+        // /api/
+        // -> {value: [Data]}
         let get_items = warp::path!("api")
             .and(warp::get())
             .and(data_as_filter(db))
@@ -56,9 +66,17 @@ async fn add_item_to_data(
     rdata: Data,
     item: NewItem,
 ) -> Result<impl warp::Reply, Infallible> {
-    let mut data = rdata.lock().unwrap();
+    let datum = Datum::new(item.memo, &item.event_time);
+    if let Err(e) = &datum {
+        if e.is::<chrono::ParseError>() {
+            println!("bad request made: {:?}", e);
 
-    data.push(Datum::with_text(item.text));
+            return Ok(warp::http::StatusCode::BAD_REQUEST)
+        }
+    }
+
+    let mut data = rdata.lock().unwrap();
+    data.push(datum.expect("Unknown error when parsing request"));
 
     Ok(warp::http::StatusCode::CREATED)
 }
@@ -74,13 +92,11 @@ async fn get_data(
 }
 
 impl Datum {
-    fn with_text(ntext: String) -> Datum {
-        Datum {
-            text: ntext,
-            time_created: std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .expect("time travelers breaking the code again")
-                .as_secs(),
-        }
+    fn new(nmemo: String, nevent_time: &str) -> anyhow::Result<Datum> {
+        Ok(Datum {
+            memo: nmemo,
+            created_time: Utc::now(),
+            event_time: nevent_time.parse()?,
+        })
     }
 }

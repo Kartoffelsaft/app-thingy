@@ -1,5 +1,16 @@
 {
-    "compilerOptions": {
-        "lib": [ "es2015", "dom" ]
-    }
+  "files": [
+      "test.ts"
+  ],
+
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "strict": true,      
+    "noImplicitAny": true,
+    "esModuleInterop": true, 
+    "outDir": "./build/",
+
+    "forceConsistentCasingInFileNames": true
+  }
 }
