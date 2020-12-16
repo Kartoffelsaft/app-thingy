@@ -1,5 +1,6 @@
 :root {
     --sidebar-width: 12%;
+    --item-entry-height: 24pt;
 }
 
 * {
@@ -54,10 +55,37 @@
     border-radius: 0px;
 }
 
-.item-entry {
-    text-align: center;
+.item-entry-box {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1fr;
     border: 2px dotted #cacaca;
     border-radius: 8px;
+    height: var(--item-entry-height);
+    vertical-align: middle;
+}
+
+.item-entry-time {
+    color: grey;
+    font-size: 10pt;
+    margin: auto;
+    margin-left: 4px;
+}
+
+.item-entry-memo {
+    text-align: center;
+}
+
+.item-entry-delete-button {
+    background-color: red;
+    width: calc(var(--item-entry-height) - 4px);
+    height: calc(var(--item-entry-height) - 4px);
+    margin-left: auto;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    border-bottom-right-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 .compose-button {
