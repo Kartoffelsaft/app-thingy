@@ -1,0 +1,18 @@
+{
+    "name": "test-client",
+    "version": "0.0.1",
+    "description": "client for server_test",
+    "main": "app.js",
+    "scripts": {
+        "build": "tsc && browserify ./build/* > ./app.js"
+    },
+
+    "dependencies": {
+        "pretty-ms": "7.0"
+    },
+
+    "devDependencies": {
+        "typescript": "4.1",
+        "browserify": "17.0"
+    }
+}

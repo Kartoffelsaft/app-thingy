@@ -1,5 +1,4 @@
 #!/bin/sh
 
-tsc -p ./client/ &&
-browserify ./client/build/* > ./client/app.js
+(cd ./client; npm run build)
 cargo run
