@@ -113,7 +113,7 @@
     top: 0;
     left: 0;
     background-color: #0004;
-    z-index: 1;
+    z-index: 10;
 }
 
 .compose-form {
@@ -123,4 +123,8 @@
     background-color: white;
     border: 1px solid grey;
     border-radius: 4px;
+}
+
+.calendar {
+    z-index: 1;
 }

@@ -1,4 +1,6 @@
 import prettyMilliseconds from 'pretty-ms';
+import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 var inputMemo = document.getElementById("memo") as HTMLInputElement;
 var inputEventDate = document.getElementById("event") as HTMLInputElement;
@@ -8,6 +10,16 @@ var composeOverlay = document.getElementById("compose-overlay") as HTMLDivElemen
 var composeForm = document.getElementById("compose-form") as HTMLFormElement;
 
 var itemList = document.getElementById("items") as HTMLDivElement;
+var calendarElement = document.getElementById("calendar") as HTMLDivElement;
+var calendar: Calendar;
+
+document.addEventListener('DOMContentLoaded', () => {
+    calendar = new Calendar(calendarElement, {
+        plugins: [ dayGridPlugin ]
+    });
+
+    calendar.render();
+});
 
 class RawItem {
     id: string;
