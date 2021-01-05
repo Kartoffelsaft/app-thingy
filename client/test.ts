@@ -46,54 +46,31 @@ class Item {
         this.memo = raw.memo;
         this.created_time = new Date(raw.created_time);
         this.event_time = new Date(raw.event_time);
+
+        this.event_time.setMinutes(this.event_time.getMinutes() + this.event_time.getTimezoneOffset());
     }
 }
 
 var data: Array<Item>;
 
 const createEntryFromItem = (item: Item) => {
-    let time = item.event_time.getTime() - Date.now() + item.event_time.getTimezoneOffset() * 60 * 1000;
-    let humanReadableTime: string;
-    if(time < 0) {
-        humanReadableTime = prettyMilliseconds(-time, {compact: true}) + " ago";
-    } else {
-        humanReadableTime = "in " + prettyMilliseconds(time, {compact: true});
-    }
-
-    let entryBox: HTMLElement = document.createElement('p');
-    entryBox.className = 'item-entry-box';
-
-    let entryTime: HTMLDivElement = document.createElement('div');
-    entryTime.className = 'item-entry-time';
-    entryTime.innerText = humanReadableTime;
-
-    let entryMemo: HTMLDivElement = document.createElement('div');
-    entryMemo.className = 'item-entry-memo';
-    entryMemo.innerText = item.memo;
-
-    let entryDeleteButton: HTMLButtonElement = document.createElement('button');
-    entryDeleteButton.className = 'item-entry-delete-button';
-    entryDeleteButton.innerText = '✖';
-    entryDeleteButton.onclick = () => {
-        fetch(`/api/${item.id}`, {method: 'DELETE'})
-            .then(refreshItems);
-    };
-
-    entryBox.appendChild(entryTime);
-    entryBox.appendChild(entryMemo);
-    entryBox.appendChild(entryDeleteButton);
-
-    return entryBox;
+    console.log(item);
+    calendar.addEvent({
+        title: item.memo,
+        start: item.event_time,
+        allDay: true
+    });
 }
 
 const refreshItems = () => {
     fetch('/api/', {method: 'GET'})
         .then(currentItems => currentItems.json())
         .then(currentItems => {
+            calendar.getEvents().forEach(e => e.remove());
             data = currentItems.value.map((raw: RawItem) => new Item(raw));
             itemList.innerHTML = "";
             data.forEach(item => {
-                itemList.appendChild(createEntryFromItem(item));
+                createEntryFromItem(item)
             });
             console.log(data);
         })

@@ -86,6 +86,8 @@ async fn add_item_to_data(
         }
     }
 
+    println!("{:?}", datum);
+
     let mut data = rdata.lock().unwrap();
     data.push(datum.expect("Unknown error when parsing request"));
 

@@ -29,6 +29,8 @@
     position: absolute;
     left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .center-list {
